@@ -1,0 +1,112 @@
+# Chaque docker-compose doit être muni d'une version, chaque version décrit un format spécifique utilisé par docker pour build
+version: "3.9"
+
+# Définition des services
+services:
+  # Service db
+  db:
+    # Indiqué la plateform que doit utilisé docker
+    platform: linux/x86_64
+    # Indiqué le nom du container (plus facile pour s'y retrouver)
+    container_name: db-container
+    # L'image à partir de laquelle on part
+    image: mysql:8.0
+    # Indiqué à quand le service doit redémarré
+    restart: unless-stopped
+    # Ouvrir le port pour l'hôte et le container (3306 en localhost pointera vers 3306 sur le réseau du container)
+    ports:
+      - "3306:3306"
+    # Exposé le port que doit utilisé le container (3306)
+    expose:
+      - 3306
+    # Variables et autres choses reliées à l'environnement
+    environment:
+      # Dire à mysql que c'est ok qu'on utilise pas de mot de passe
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      # Indiqué la base de donnée sur laquelle on travaille
+      MYSQL_DATABASE: ma_bd
+    # Indiqué les volumes
+    volumes:
+      # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # Indiqué quel réseau sera utilisé (intranet)
+    networks:
+      - intranet
+
+  # Service backend
+  backend:
+    # Indiqué le nom du container (plus facile pour s'y retrouver)
+    container_name: backend-container
+    # L'image à partir de laquelle on part
+    image: node-backend:14-development
+    # Les instructions de build
+    build:
+      # À partir de quel répertoire on va build
+      context: ./backend
+      # Indiqué le dockerfile
+      dockerfile: Dockerfile
+    # Ouvrir le port pour l'hôte et le container (3000 en localhost pointera vers 3000 sur le réseau du container)
+    ports:
+      - "3000:3000"
+    # Exposé le port que doit utilisé le container (3000)
+    expose:
+      - 3000
+    # Variables et autres choses reliées à l'environnement
+    environment:
+      # Indiqué l'hôte de la base de donnée (service db)
+      DB_HOST: db
+      # Indiqué le port de la base de donnée
+      DB_PORT: 3306
+      # Indiqué le nom de la base de donnée
+      DB_NAME: ma_bd
+    # Indiqué que le service backend sera exécuté après que le service db soit exécuté
+    depends_on:
+      - db
+    # Indiqué les volumes
+    volumes:
+      # Indiqué quel répertoire dans la machine hôte fait référence à quel répertoire dans le container, pour que le code puissent être mis à jour
+      - ./backend/node-backend/server:/app/node-backend/server
+    # Indiqué quel réseau sera utilisé (intranet)
+    networks:
+      - intranet
+
+  # Service frontend
+  frontend:
+    # Indiqué le nom du container (plus facile pour s'y retrouver)
+    container_name: development-frontend
+    # L'image à partir de laquelle on part
+    image: node-frontend:18-alpine-development
+    # Les instructions de build
+    build:
+      # À partir de quel répertoire on va build
+      context: ./frontend
+      # Indiqué le dockerfile
+      dockerfile: Dockerfile
+    # Indiqué à quand le service doit redémarré
+    restart: always
+    # Ouvrir le port pour l'hôte et le container (8080 en localhost pointera vers 8080 sur le réseau du container)
+    ports:
+      - "8080:8080"
+    # Exposé le port que doit utilisé le container (8080)
+    expose:
+      - 8080
+    # Indiqué que le service frontend sera exécuté après que le service backend soit exécuté
+    depends_on:
+      - backend
+    # Indiqué les volumes
+    volumes:
+      # Indiqué le volume qui pointe le fichier src de la machine hôte et l'associe au fichier src dans le container pour le hot reload (rechargement de code directement sans avoir à rebuild le container)
+      - ./frontend/src:/app/src
+      # Indiqué un volume qui pointe le fichier index.html de la machine hôte et l'associe au fichier index.html dans le container pour que les changements soient pris en compte également (le fichier n'est pas dans le répertoire src)
+      - ./frontend/index.html:/app/index.html
+    # Indiqué quel réseau sera utilisé (intranet)
+    networks:
+      - intranet
+
+# Indiqué le réseau utilisé
+networks:
+  # Indiqué le nom du réseau
+  intranet:
+    # Le driver est utilisé pour déterminer comment les containers communiquent entre eux ET avec le réseau hôte.
+    # Le bridge crée un réseau interne privé
+    driver: bridge
