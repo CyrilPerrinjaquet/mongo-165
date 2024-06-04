@@ -24,7 +24,7 @@ services:
       # Dire à mysql que c'est ok qu'on utilise pas de mot de passe
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       # Indiqué la base de donnée sur laquelle on travaille
-      MYSQL_DATABASE: ma_bd
+      MYSQL_DATABASE: database-165
     # Indiqué les volumes
     volumes:
       # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
@@ -38,7 +38,7 @@ services:
     # Indiqué le nom du container (plus facile pour s'y retrouver)
     container_name: backend-container
     # L'image à partir de laquelle on part
-    image: node-backend:14-development
+    image: node:latest
     # Les instructions de build
     build:
       # À partir de quel répertoire on va build
@@ -58,14 +58,14 @@ services:
       # Indiqué le port de la base de donnée
       DB_PORT: 3306
       # Indiqué le nom de la base de donnée
-      DB_NAME: ma_bd
+      DB_NAME: database-165
     # Indiqué que le service backend sera exécuté après que le service db soit exécuté
     depends_on:
       - db
     # Indiqué les volumes
     volumes:
       # Indiqué quel répertoire dans la machine hôte fait référence à quel répertoire dans le container, pour que le code puissent être mis à jour
-      - ./backend/node-backend/server:/app/node-backend/server
+      - ./backend:/app/node-backend/server #TODO: Vérifier si le Dockerfile peut se trouver dans le répertoire backend ou non
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
       - intranet
@@ -73,9 +73,9 @@ services:
   # Service frontend
   frontend:
     # Indiqué le nom du container (plus facile pour s'y retrouver)
-    container_name: development-frontend
+    container_name: frontend-container
     # L'image à partir de laquelle on part
-    image: node-frontend:18-alpine-development
+    image: node:latest
     # Les instructions de build
     build:
       # À partir de quel répertoire on va build
@@ -95,9 +95,11 @@ services:
       - backend
     # Indiqué les volumes
     volumes:
-      # Indiqué le volume qui pointe le fichier src de la machine hôte et l'associe au fichier src dans le container pour le hot reload (rechargement de code directement sans avoir à rebuild le container)
+      # Indiqué le volume qui pointe le fichier src de la machine hôte et l'associe au fichier src dans le container
+      # pour le hot reload (rechargement de code directement sans avoir à rebuild le container)
       - ./frontend/src:/app/src
-      # Indiqué un volume qui pointe le fichier index.html de la machine hôte et l'associe au fichier index.html dans le container pour que les changements soient pris en compte également (le fichier n'est pas dans le répertoire src)
+      # Indiqué un volume qui pointe le fichier index.html de la machine hôte et l'associe au fichier index.html dans le container
+      # pour que les changements soient pris en compte également (le fichier n'est pas dans le répertoire src)
       - ./frontend/index.html:/app/index.html
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
