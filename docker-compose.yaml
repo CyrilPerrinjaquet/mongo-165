@@ -64,6 +64,7 @@ services:
     # Indiqué que le service backend sera exécuté après que le service db soit exécuté
     depends_on:
       - db
+    entrypoint: ["/docker-entrypoint-initdb.d/init.sh"]
     # Indiqué les volumes
     volumes:
       # Indiqué quel répertoire dans la machine hôte fait référence à quel répertoire dans le container, pour que le code puissent être mis à jour
