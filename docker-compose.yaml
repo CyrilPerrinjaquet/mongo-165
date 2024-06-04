@@ -10,7 +10,7 @@ services:
     # Indiqué le nom du container (plus facile pour s'y retrouver)
     container_name: db-container
     # L'image à partir de laquelle on part
-    image: mysql:8.0
+    image: mongo:latest
     # Indiqué à quand le service doit redémarré
     restart: unless-stopped
     # Ouvrir le port pour l'hôte et le container (3306 en localhost pointera vers 3306 sur le réseau du container)
@@ -21,14 +21,15 @@ services:
       - 3306
     # Variables et autres choses reliées à l'environnement
     environment:
-      # Dire à mysql que c'est ok qu'on utilise pas de mot de passe
-      MYSQL_ALLOW_EMPTY_PASSWORD: true
-      # Indiqué la base de donnée sur laquelle on travaille
-      MYSQL_DATABASE: database-165
+      # Indiquer le nom d'utilisateur et le mot de passe pour la base de donnée
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      # Indiquer la base de données sur laquelle on travaille
+      MONGO_INITDB_DATABASE: database-165
     # Indiqué les volumes
     volumes:
       # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/init.json:/docker-entrypoint-initdb.d/init.json
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
       - intranet
