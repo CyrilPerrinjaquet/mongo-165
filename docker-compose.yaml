@@ -13,12 +13,12 @@ services:
     image: mongo:latest
     # Indiqué à quand le service doit redémarré
     restart: unless-stopped
-    # Ouvrir le port pour l'hôte et le container (3306 en localhost pointera vers 3306 sur le réseau du container)
+    # Ouvrir le port pour l'hôte et le container (8000 en localhost pointera vers 8000 sur le réseau du container)
     ports:
-      - "3306:3306"
-    # Exposé le port que doit utilisé le container (3306)
+      - "8000:8000"
+    # Exposé le port que doit utilisé le container (8000)
     expose:
-      - 3306
+      - 8000
     # Variables et autres choses reliées à l'environnement
     environment:
       # Indiquer le nom d'utilisateur et le mot de passe pour la base de donnée
@@ -29,7 +29,8 @@ services:
     # Indiqué les volumes
     volumes:
       # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
-      - ./db/init.json:/docker-entrypoint-initdb.d/init.json
+      - ./db/init.json:/db/init.json
+      - ./db/init.sh:/docker-entrypoint-initdb.d/init.sh
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
       - intranet
@@ -57,7 +58,7 @@ services:
       # Indiqué l'hôte de la base de donnée (service db)
       DB_HOST: db
       # Indiqué le port de la base de donnée
-      DB_PORT: 3306
+      DB_PORT: 8000
       # Indiqué le nom de la base de donnée
       DB_NAME: database-165
     # Indiqué que le service backend sera exécuté après que le service db soit exécuté
