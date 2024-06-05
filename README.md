@@ -15,7 +15,7 @@ Assurer vous d'avoir les différentes commandes installées sur votre PC :
 $ make build
 ```
 
-## 3. Puis lancer les containers : 
+## 3. Puis lancer les containers : 
 ```bash
 $ make up
 ```
