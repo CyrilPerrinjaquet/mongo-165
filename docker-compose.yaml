@@ -20,7 +20,7 @@ services:
     expose:
       - 27040
     # Variables et autres choses reliées à l'environnement
-    command: mongod --port 27040 --auth --bind_ip_all
+    command: mongod --auth --bind_ip_all
     # Indiqué les volumes
     volumes:
       # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
