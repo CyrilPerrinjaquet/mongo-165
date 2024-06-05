@@ -13,18 +13,18 @@ services:
     image: mongo:latest
     # Indiqué à quand le service doit redémarré
     restart: unless-stopped
-    # Ouvrir le port pour l'hôte et le container (8000 en localhost pointera vers 8000 sur le réseau du container)
+    # Ouvrir le port pour l'hôte et le container (27040 en localhost pointera vers 27040 sur le réseau du container)
     ports:
       - "27040:27017"
-    # Exposé le port que doit utilisé le container (8000)
+    # Exposé le port que doit utilisé le container (27040)
     expose:
       - 27040
-    # Variables et autres choses reliées à l'environnement
+    # Indiquer la commande à exécuter pour lancer le service
     command: mongod --auth --bind_ip_all
     # Indiqué les volumes
     volumes:
-      # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
       - mongodb-data:/data/db
+      # Indiqué le script que devra exécuter docker pour construire la DB quand on lancera le service
       - ./db/init.js:/docker-entrypoint-initdb.d/init.js
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
@@ -53,9 +53,9 @@ services:
       # Indiqué l'hôte de la base de donnée (service db)
       DB_HOST: db
       # Indiqué le port de la base de donnée
-      DB_PORT: 8000
+      DB_PORT: 27040
       # Indiqué le nom de la base de donnée
-      DB_NAME: database-165
+      DB_NAME: epsic
     # Indiqué que le service backend sera exécuté après que le service db soit exécuté
     depends_on:
       - db
