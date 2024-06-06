@@ -1,6 +1,8 @@
 # Welcome!
 
 Cette application à été réalisée dans le cadre du module 165.
+Malheureusement, nous n'avons pas réussi à la faire fonctionner, beaucoup de problèmes ont été recontrés.
+Seulement la db marche, l'intégration entre backend et frontend ne fonctionne pas.
 
 Nous avons choisi de faire avec Docker, voici les étapes pour pouvoir déployer l'app :
 
@@ -20,6 +22,16 @@ $ make build
 $ make up
 ```
 
-## 4. Et voilà! l'application tourne et vous pouvez la voir à l'adresse suivante :
+Le container back ne fonctionne pas, vous pouvez regarder que le container db marche cependant.
 
-*http://localhost:8080/*
+## 4. Entrer dans le container db :
+```bash
+$ make sql
+```
+
+Une fois dedans, vous pouvez exécuter :
+```bash
+mongosh --host db-container -u root -p password
+```
+
+Et voir que la db "epsic" a été créée.
