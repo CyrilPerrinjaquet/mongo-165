@@ -8,4 +8,4 @@ down:
 	docker-compose down -v
 
 sql: 
-	docker exec -it db-container mongosh --port 27040
+	docker exec -it db-container mongosh -h db-container
