@@ -62,7 +62,7 @@ services:
     # Indiqué les volumes
     volumes:
       # Indiqué quel répertoire dans la machine hôte fait référence à quel répertoire dans le container, pour que le code puissent être mis à jour
-      - ./backend:/app/node-backend/server #TODO: Vérifier si le Dockerfile peut se trouver dans le répertoire backend ou non
+      - ./backend:/app/node-backend/server
     # Indiqué quel réseau sera utilisé (intranet)
     networks:
       - intranet
