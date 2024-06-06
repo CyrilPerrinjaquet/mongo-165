@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
+import { Student } from "../types";
 
 function App(): JSX.Element {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Student[]>([]);
+  const [student, setStudent] = useState<Student>(); 
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const fetchData = async () => {
+  
+  const fetchData = async (): Promise<void> => {
     try {
-      const response = await fetch("localhost:3001");
+      const response = await fetch("http://localhost:3000/students");
       const jsonData = await response.json();
       setData(jsonData);
+      getRandomData();
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const getRandomData = () => {
+  const getRandomData = (): void => {
     const randomIndex = Math.floor(Math.random() * data.length);
-    return data[randomIndex];
+    setStudent(data[randomIndex]);
   };
 
   return (
@@ -29,7 +32,11 @@ function App(): JSX.Element {
       {data.length > 0 && (
         <div>
           <h2>Random Data:</h2>
-          <p>{getRandomData()}</p>
+          <p>{student?.name}</p>
+          <p>{student?.lastName}</p>
+          <p>{student?.class}</p>
+          <p>{student?.dateOfBirth.toLocaleDateString()}</p>
+          <p>{student?.specificiProvisions.join(", ")}</p>
         </div>
       )}
     </div>
