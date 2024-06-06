@@ -14,19 +14,19 @@ Assurer vous d'avoir les différentes commandes installées sur votre PC :
 
 ## 2. Une fois ces commandes installées, vous pouvez build les images :
 ```bash
-$ make build
+make build
 ```
 
 ## 3. Puis lancer les containers : 
 ```bash
-$ make up
+make up
 ```
 
 Le container back ne fonctionne pas, vous pouvez regarder que le container db marche cependant.
 
 ## 4. Entrer dans le container db :
 ```bash
-$ make sql
+make sql
 ```
 
 Une fois dedans, vous pouvez exécuter :
@@ -35,3 +35,8 @@ mongosh --host db-container -u root -p password
 ```
 
 Et voir que la db "epsic" a été créée.
+
+Puis pour arrêter les containers : 
+```bash
+make down
+```
