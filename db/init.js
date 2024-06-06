@@ -2,7 +2,7 @@ db = db.getSiblingDB("epsic");
 
 db.getSiblingDB("admin").createUser({
   user: "root",
-  pwd: "",
+  pwd: "password",
   roles: [{ role: "root", db: "admin" }],
 });
 
