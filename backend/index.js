@@ -1,14 +1,13 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const studentRoutes = require("./routes/studentRoutes");
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import studentRoutes from "./studentRoutes.js";
 
 const app = express();
 
 /* Exemple URL : mongodb://myAdmin:nicolas@127.0.0.1:27017/?authsource=admin */
 mongoose.connect("mongodb://root:password@127.0.0.1:27040/?authsource=admin", {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;

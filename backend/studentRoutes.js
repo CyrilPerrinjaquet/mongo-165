@@ -1,6 +1,6 @@
-const express = require('express');
+import express from "express";
+import Student from "./student.js";
 const router = express.Router();
-const Student = require('../models/Student');
 
 // Route pour obtenir tous les étudiants
 router.get('/students', async (req, res) => {
@@ -12,4 +12,4 @@ router.get('/students', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
