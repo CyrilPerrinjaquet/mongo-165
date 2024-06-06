@@ -9,7 +9,7 @@ function App(): JSX.Element {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("");
+      const response = await fetch("localhost:3001");
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
