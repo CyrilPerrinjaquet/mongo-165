@@ -6,7 +6,7 @@ const studentRoutes = require("./routes/studentRoutes");
 const app = express();
 
 /* Exemple URL : mongodb://myAdmin:nicolas@127.0.0.1:27017/?authsource=admin */
-mongoose.connect("mongodb://route:password@127.0.0.1:27040/?authsource=admin", {
+mongoose.connect("mongodb://root:password@127.0.0.1:27040/?authsource=admin", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

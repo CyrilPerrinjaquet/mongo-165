@@ -22,4 +22,4 @@ EXPOSE 3000
 
 # Nous définissons ensuite la commande à être exécuter quand nous voudrons run le container, 
 # nous utilisons donc nodemon pour exécuter le fichier server.js
-CMD ["nodemon", "./backend/index.js"]
+CMD ["nodemon", "./backend/index.cjs"]

@@ -53,7 +53,7 @@ services:
       # Indiqué l'hôte de la base de donnée (service db)
       DB_HOST: db
       # Indiqué le port de la base de donnée
-      DB_PORT: 27040
+      DB_PORT: 27017
       # Indiqué le nom de la base de donnée
       DB_NAME: epsic
     # Indiqué que le service backend sera exécuté après que le service db soit exécuté
